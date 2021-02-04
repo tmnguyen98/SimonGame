@@ -30,4 +30,13 @@ $(".btn").on("click", function(event) {
     let userChosenColour = event.currentTarget.id;
     userClickedPattern.push(userChosenColour);
     playSound(userChosenColour);
+    animatedPress($("#"+userChosenColour));
 })
+
+//Add animation when pressing the button
+function animatedPress(currentColour) {
+    currentColour.addClass("pressed");
+    setTimeout(() => {
+        currentColour.removeClass("pressed");
+    }, 100);
+}
