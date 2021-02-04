@@ -1,23 +1,33 @@
 //Array hold seuqence of colours
 const buttonColours = ["red", "blue", "green", "yellow"];
-
+let gameStart = true;
 let gamePattern = [];
 let userClickedPattern = [];
+let level = 0;
+
+//Start the game
+while (gameStart == true) {
+    gameStart = false;
+    $(document).one("keydown", function() {
+        nextSequence();
+    })
+}
 
 //Function that create a new pattern of the game
 function nextSequence() {
-    let randomNumber = ~~(Math.random()*4);
+    //Change title of the screen (h1)
+    $("h1").text("Level " + level);
     //Choose a random colour
+    let randomNumber = ~~(Math.random()*4);
     let randomChosenColour = buttonColours[randomNumber];
     //Push that random colour into the pattern
     gamePattern.push(randomChosenColour);
 
     //$("#" + randomChosenColour).on("click", function () {
     $("." + randomChosenColour).fadeOut(100).fadeIn(100);
+    playSound(randomChosenColour);
     //});
 }
-
-nextSequence();
 
 //Play the sound of the button
 function playSound(name) {
