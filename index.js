@@ -6,12 +6,11 @@ let userClickedPattern = [];
 let level = 0;
 
 //Start the game
-while (gameStart == true) {
-    gameStart = false;
+function startGame() {
     $(document).one("keydown", function() {
-        nextSequence();
-    })
+        nextSequence();})
 }
+startGame();
 
 //Function that create a new pattern of the game
 function nextSequence() {
@@ -38,9 +37,35 @@ function playSound(name) {
 // Record which button is clicked by the user
 $(".btn").on("click", function(event) {
     let userChosenColour = event.currentTarget.id;
-    userClickedPattern.push(userChosenColour);
+    let currentIndex = userClickedPattern.push(userChosenColour) - 1;
     playSound(userChosenColour);
     animatedPress($("#"+userChosenColour));
+
+    // Check if the game already started when user clicks button
+    if (gamePattern.length > 0) {
+        //Check if user's click is the same as pattern
+        if (checkAnswer(currentIndex) == true) {
+            //Check if user clicked correctly to the last pattern
+            if (currentIndex + 1 == gamePattern.length) {
+                //reset user clicked pattern and increase the next pattern
+                userClickedPattern = [];
+                setTimeout(() => {
+                    level++;
+                    nextSequence();
+                }, 600);
+            }
+        // If you user clicked the wrong button
+        } else {
+            //Notify that user is lost, and restart the game
+            alert("You lose");
+            gamePattern = [];
+            userClickedPattern = [];
+            level = 0;
+            nextSequence();
+        }
+    } else {
+        userClickedPattern = [];
+    }
 })
 
 //Add animation when pressing the button
@@ -49,4 +74,13 @@ function animatedPress(currentColour) {
     setTimeout(() => {
         currentColour.removeClass("pressed");
     }, 100);
+}
+
+//Check if user's answer is correct
+function checkAnswer(currentLevel) {
+    if (userClickedPattern[currentLevel] == gamePattern[currentLevel]) {
+        return true;
+    } else {
+        return false;
+    }
 }
