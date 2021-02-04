@@ -57,11 +57,7 @@ $(".btn").on("click", function(event) {
         // If you user clicked the wrong button
         } else {
             //Notify that user is lost, and restart the game
-            alert("You lose");
-            gamePattern = [];
-            userClickedPattern = [];
-            level = 0;
-            nextSequence();
+            userLost();
         }
     } else {
         userClickedPattern = [];
@@ -83,4 +79,24 @@ function checkAnswer(currentLevel) {
     } else {
         return false;
     }
+}
+
+//Function includes behaviors when user lost
+function userLost() {
+    // Animated sound
+    var audio = new Audio("sounds/wrong.mp3");
+    audio.play();
+    // Reset stuff
+    gamePattern = [];
+    userClickedPattern = [];
+    level = 0;
+    // Animated screen
+    $("body").addClass("game-over");
+    setTimeout(() => {
+        $("body").removeClass("game-over");
+    }, 200);
+    $("h1").text("Game Over, Press Any Key to Restart");
+
+    //Reset the game if user press any key
+    startGame();
 }
